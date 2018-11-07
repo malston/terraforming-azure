@@ -74,3 +74,17 @@ resource "azurerm_lb_rule" "iso-web-http-rule" {
   backend_address_pool_id = "${azurerm_lb_backend_address_pool.iso-web-backend-pool.*.id[count.index]}"
   probe_id                = "${azurerm_lb_probe.iso-web-http-probe.*.id[count.index]}"
 }
+
+resource "azurerm_lb_rule" "iso-web-ntp" {
+  name                = "iso-web-ntp-rule-${element(var.iso_seg_names, count.index)}"
+  count               = "${var.count}"
+  resource_group_name = "${var.resource_group_name}"
+  loadbalancer_id     = "${azurerm_lb.iso-web.*.id[count.index]}"
+
+  frontend_ip_configuration_name = "iso-web-frontendip-${element(var.iso_seg_names, count.index)}"
+  protocol                       = "UDP"
+  frontend_port                  = "123"
+  backend_port                   = "123"
+
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.iso-web-backend-pool.*.id[count.index]}"
+}
