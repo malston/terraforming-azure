@@ -75,7 +75,7 @@ resource "azurerm_storage_blob" "optional_ops_manager_image" {
 # ============== DNS
 
 resource "azurerm_dns_a_record" "ops_manager_dns" {
-  name                = "pcf"
+  name                = "opsman"
   zone_name           = "${var.dns_zone_name}"
   resource_group_name = "${var.resource_group_name}"
   ttl                 = "60"
